@@ -67,15 +67,13 @@ resource "aws_security_group" "ec2" {
   vpc_id      = aws_vpc.this.id
 
   # SSH only if key_name is set
-  dynamic "ingress" {
-    for_each = var.ec2_key_name != "" ? [1] : []
-    content {
-      description = "SSH"
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = [var.allowed_ssh_cidr]
-    }
+  ingress {
+    description = "SSH (for EC2 Instance Connect / SSH)"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.allowed_ssh_cidr]
+  }
   }
 
   egress {
